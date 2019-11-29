@@ -133,7 +133,7 @@ bool HelloWorld::init()
 
 	auto myMenu = Menu::create(closeItem, endItem, nullptr);
 	myMenu->setPosition(100, 100);
-	addChild(myMenu);
+	//addChild(myMenu);
 	// Create Menu from array of menuItem
 	Vector<MenuItem*> menuItems;
 	menuItems.pushBack(itemPlay);
@@ -141,7 +141,45 @@ bool HelloWorld::init()
 
 	auto menu = Menu::createWithArray(menuItems);
 	menu->setPosition(200, 100);
-	addChild(menu);
+	//addChild(menu);
+
+	auto button = ui::Button::create("normal.jfif", "Yasuo.png", "CloseNormal.png");
+	button->setPosition(Vec2(100, 100));
+	//button->setTitleText("Button Text");
+
+	button->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			break;
+		default:
+			break;
+		}
+	});
+	//addChild(button);
+
+	// Create checkbox
+	auto checkbox = ui::CheckBox::create("Buttons/check_box_normal.png",
+		"Buttons/check_box_normal_press.png",
+		"Buttons/check_box_active.png",
+		"Buttons/check_box_normal_disable.png",
+		"Buttons/check_box_active_disable.png");
+	checkbox->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			log("checkbox 1 clicked");
+			break;
+		default:
+			break;
+		}
+	});
+	this->addChild(checkbox);
 
 
     return true;
