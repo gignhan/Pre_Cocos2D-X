@@ -57,7 +57,7 @@ bool HelloWorld::init()
     //    you may modify it.
 
     // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = MenuItemImage::create(
+    /*auto closeItem = MenuItemImage::create(
                                            "CloseNormal.png",
                                            "CloseSelected.png",
                                            CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
@@ -86,7 +86,7 @@ bool HelloWorld::init()
     // add a label shows "Hello World"
     // create and initialize a label
 
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
+    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 16);
     if (label == nullptr)
     {
         problemLoading("'fonts/Marker Felt.ttf'");
@@ -100,7 +100,7 @@ bool HelloWorld::init()
         // add the label as a child to this layer
         this->addChild(label, 1);
     }
-
+	
     // add "HelloWorld" splash screen"
     auto sprite = Sprite::create("HelloWorld.png");
     if (sprite == nullptr)
@@ -114,7 +114,36 @@ bool HelloWorld::init()
 
         // add the sprite as a child to this layer
         this->addChild(sprite, 0);
-    }
+    }*/	
+	//Menu Item Image
+	auto closeItem = MenuItemImage::create(
+										"CloseNormal.png",
+										"CloseSelected.png",
+										CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+
+	// create label
+	auto label = Label::create("MENU", "Arial", 30);
+	auto endItem = MenuItemLabel::create(label, nullptr);
+	endItem->setPosition(200, 400);
+	
+	auto itemPlay = MenuItemFont::create("Play", nullptr);
+	auto itemExit = MenuItemFont::create("Exit", CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+	itemPlay->setPosition(100, 100);
+	itemExit->setPosition(100, 50);
+
+	auto myMenu = Menu::create(closeItem, endItem, nullptr);
+	myMenu->setPosition(100, 100);
+	addChild(myMenu);
+	// Create Menu from array of menuItem
+	Vector<MenuItem*> menuItems;
+	menuItems.pushBack(itemPlay);
+	menuItems.pushBack(itemExit);
+
+	auto menu = Menu::createWithArray(menuItems);
+	menu->setPosition(200, 100);
+	addChild(menu);
+
+
     return true;
 }
 
@@ -134,4 +163,13 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     //_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
+}
+
+void HelloWorld::onClickMenuItem(cocos2d::Ref * pSender)
+{
+
+}
+void menuCloseCallback(Ref* pSender)
+{
+	exit(0);
 }
