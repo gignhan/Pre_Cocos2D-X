@@ -22,14 +22,14 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "HelloWorldScene.h"
+#include "SettingScene.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
-Scene* HelloWorld::createScene()
+Scene* Setting::createScene()
 {
-    return HelloWorld::create();
+    return Setting::create();
 }
 
 // Print useful error message instead of segfaulting when files are not there.
@@ -40,7 +40,7 @@ static void problemLoading(const char* filename)
 }
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init()
+bool Setting::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -115,78 +115,38 @@ bool HelloWorld::init()
         // add the sprite as a child to this layer
         this->addChild(sprite, 0);
     }*/	
-	//Menu Item Image
-	auto closeItem = MenuItemImage::create(
-										"CloseNormal.png",
-										"CloseSelected.png",
-										CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
-
-	// create label
-	auto label = Label::create("MENU", "Arial", 30);
-	auto endItem = MenuItemLabel::create(label, nullptr);
-	endItem->setPosition(200, 400);
 	
-	auto itemPlay = MenuItemFont::create("Play", nullptr);
-	auto itemExit = MenuItemFont::create("Exit", CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
-	itemPlay->setPosition(100, 100);
-	itemExit->setPosition(100, 50);
-
-	auto myMenu = Menu::create(closeItem, endItem, nullptr);
-	myMenu->setPosition(100, 100);
-	//addChild(myMenu);
+	auto itemSound = MenuItemFont::create("Sound", CC_CALLBACK_1(Setting::onClickItemSound, this));
+	auto itemAbout = MenuItemFont::create("About", CC_CALLBACK_1(Setting::onClickItemAbout, this));
+	itemSound->setPosition(Vec2(10, 200));
+	itemAbout->setPosition(Vec2(10, 100));
 	// Create Menu from array of menuItem
 	Vector<MenuItem*> menuItems;
-	menuItems.pushBack(itemPlay);
-	menuItems.pushBack(itemExit);
-
+	menuItems.pushBack(itemSound);
+	menuItems.pushBack(itemAbout);
 	auto menu = Menu::createWithArray(menuItems);
-	menu->setPosition(200, 100);
+	menu->setPosition(Vec2(100, 100));
 	addChild(menu);
-
-	auto button = ui::Button::create("normal.jfif", "Yasuo.png", "CloseNormal.png");
-	button->setPosition(Vec2(100, 100));
-	//button->setTitleText("Button Text");
-
-	button->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			break;
-		default:
-			break;
-		}
-	});
-	//addChild(button);
-
-	// Create checkbox
-	auto checkbox = ui::CheckBox::create("check_box_normal.png",
-		"check_box_normal_press.png",
-		"check_box_active.png",
-		"check_box_normal_disable.png",
-		"check_box_active_disable.png");
-	checkbox->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
+	
+	static auto textField = ui::TextField::create("Hello Cocos2d-x", "Arial", 24);
+	textField->setMaxLengthEnabled(true);
+	textField->setMaxLength(10);
+	textField->setPasswordEnabled(true);
+	textField->setPosition(Vec2(150, 100));
+	textField->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
 	{
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			log("checkbox 1 clicked");
-			break;
-		default:
-			break;
-		}
+		log("editing a TextField");
 	});
-	//this->addChild(checkbox);
+	addChild(textField);
+
+	
 
 
     return true;
 }
 
 
-void HelloWorld::menuCloseCallback(Ref* pSender)
+void Setting::menuCloseCallback(Ref* pSender)
 {
     //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
@@ -203,4 +163,65 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 }
 
+void Setting::onClickItemSound(cocos2d::Ref * pSender)
+{
+	
+	static auto slider = ui::Slider::create();
+	slider->loadBarTexture("./Sprites/slider_bar_bg.png");
+	slider->loadSlidBallTextures("./Sprites/slider_ball_normal.png", "./Sprites/slider_ball_pressed.png", "./Sprites/slider_ball_disable.png");
+	slider->loadProgressBarTexture("./Sprites/slider_bar_pressed.png");
+	slider->setPercent(10);
+	slider->setPosition(Vec2(200, 250));
+	slider->addClickEventListener([](Ref* event) 
+	{
+		log("Slider: %d", slider->getPercent());
+	});
+	addChild(slider);
 
+	auto visibleSize1 = Director::getInstance()->getVisibleSize();
+	auto checkbox = ui::CheckBox::create("./Sprites/checkbox_normal.png",
+		"./Sprites/checkbox_pressed.png",
+		"./Sprites/checkbox_checked.png",
+		"./Sprites/checkbox_normal_disable.png",
+		"./Sprites/checkbox_checked_disable.png");
+
+	checkbox->setPosition(Vec2(350, 250));
+	checkbox->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			log("checkbox 1 clicked");
+			break;
+		default:
+			break;
+		}
+	});
+
+	this->addChild(checkbox);
+	
+	
+}
+
+void Setting::onClickItemAbout(cocos2d::Ref * pSender)
+{
+	auto scrollView = ui::ScrollView::create();
+	scrollView->setDirection(ui::ScrollView::Direction::VERTICAL);
+	scrollView->setContentSize(Size(300, 200));
+	scrollView->setInnerContainerSize(Size(1280, 2500));
+	scrollView->setBounceEnabled(true);
+	scrollView->setPosition(Vec2(200, 50));
+	for (int i = 0; i < 50; i++)
+	{
+		auto label = Label::createWithSystemFont("line " + i, "Arial", 20);
+		label->setPosition(Vec2(scrollView->getContentSize().width / 2, i * 50));
+		scrollView->addChild(label);
+	}
+	addChild(scrollView);
+
+
+
+
+}
