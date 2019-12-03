@@ -131,14 +131,15 @@ bool Setting::init()
 	itemSound->setPosition(Vec2(10, 200));
 	itemAbout->setPosition(Vec2(10, 100));
 	//itemBack->setAnchorPoint(Vec2(1,1));
-	itemBack->setPosition(Vec2(10 , 150));
+	//itemBack->setPosition(Vec2(10 , 150));
 	// Create Menu from array of menuItem
 	Vector<MenuItem*> menuItems;
 	menuItems.pushBack(itemSound);
 	menuItems.pushBack(itemAbout);
-	menuItems.pushBack(itemBack);
+	//menuItems.pushBack(itemBack);
 	auto menu = Menu::createWithArray(menuItems);
-	menu->setPosition(Vec2(0, 0));
+	menu->setAnchorPoint(Vec2(0,0));
+	menu->setPosition(Vec2(100, 100));
 	addChild(menu);
 	
 	static auto textField = ui::TextField::create("Hello Cocos2d-x", "Arial", 24);
@@ -222,16 +223,9 @@ void Setting::onClickItemSound(cocos2d::Ref * pSender)
 
 void Setting::onClickItemAbout(cocos2d::Ref * pSender)
 {
-	auto scrollView = ui::ScrollView::create();
-	scrollView->setDirection(ui::ScrollView::Direction::VERTICAL);
-	scrollView->setContentSize(Size(300, 200));
-	scrollView->setInnerContainerSize(Size(1280, 2500));
-	scrollView->setBounceEnabled(true);
-	scrollView->setPosition(Vec2(200, 50));
 	auto label = Label::createWithSystemFont("Game Fight Fly ", "Arial", 20);
-	label->setPosition(Vec2(scrollView->getContentSize().width / 2,50));
-	scrollView->addChild(label);
-	addChild(scrollView);
+	label->setPosition(Vec2(100,50));
+	addChild(label);
 
 
 

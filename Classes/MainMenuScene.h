@@ -22,13 +22,13 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __HELLOWORLD_SCENE_H__
-#define __HELLOWORLD_SCENE_H__
+#ifndef __MAINMENU_SCENE_H__
+#define __MAINMENU_SCENE_H__
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 
-class HelloWorld : public cocos2d::Scene
+class MainMenuScene : public cocos2d::Scene
 {
 public:
     static cocos2d::Scene* createScene();
@@ -37,8 +37,10 @@ public:
     
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
+	void menuPlayCallback(cocos2d::Ref* pSender);
+	void menuSettingCallback(cocos2d::Ref* pSender);
     // implement the "static create()" method manually
-    CREATE_FUNC(HelloWorld);
+    CREATE_FUNC(MainMenuScene);
 };
 
-#endif // __HELLOWORLD_SCENE_H__
+#endif // __MAINMENU_SCENE_H__

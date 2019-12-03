@@ -22,14 +22,15 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "HelloWorldScene.h"
+#include "MainMenuScene.h"
 #include "SimpleAudioEngine.h"
-
+#include "SettingScene.h"
+#include"GamePlayScene.h"
 USING_NS_CC;
 
-Scene* HelloWorld::createScene()
+Scene* MainMenuScene::createScene()
 {
-    return HelloWorld::create();
+    return MainMenuScene::create();
 }
 
 // Print useful error message instead of segfaulting when files are not there.
@@ -40,7 +41,7 @@ static void problemLoading(const char* filename)
 }
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init()
+bool MainMenuScene::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -115,78 +116,36 @@ bool HelloWorld::init()
         // add the sprite as a child to this layer
         this->addChild(sprite, 0);
     }*/	
-	//Menu Item Image
-	auto closeItem = MenuItemImage::create(
-										"CloseNormal.png",
-										"CloseSelected.png",
-										CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
-
-	// create label
-	auto label = Label::create("MENU", "Arial", 30);
-	auto endItem = MenuItemLabel::create(label, nullptr);
-	endItem->setPosition(200, 400);
+	auto background = Sprite::create("./Sprites/background.png");
+	background->setAnchorPoint(Vec2(0,0));
+	background->setPosition(Vec2(0,0));
+	//background->setScale(380,500);
+	addChild(background);
+	auto logo = Sprite::create("./Sprites/Logo/logo__.png");
+	logo->setAnchorPoint(Vec2(0, 0));
+	logo->setPosition(Vec2(50,450));
+	addChild(logo);
 	
-	auto itemPlay = MenuItemFont::create("Play", nullptr);
-	auto itemExit = MenuItemFont::create("Exit", CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
-	itemPlay->setPosition(100, 100);
-	itemExit->setPosition(100, 50);
+	auto itemPlay = MenuItemFont::create("Play", CC_CALLBACK_1(MainMenuScene::menuPlayCallback, this));
+	auto itemSetting = MenuItemFont::create("Setting", CC_CALLBACK_1(MainMenuScene::menuSettingCallback, this));
+	auto itemExit = MenuItemFont::create("Exit", CC_CALLBACK_1(MainMenuScene::menuCloseCallback, this));
 
-	auto myMenu = Menu::create(closeItem, endItem, nullptr);
-	myMenu->setPosition(100, 100);
-	//addChild(myMenu);
-	// Create Menu from array of menuItem
+	itemPlay->setPosition(Vec2(10, 200));
+	itemSetting->setPosition(Vec2(10,150));
+	itemExit->setPosition(Vec2(10, 100));
+
 	Vector<MenuItem*> menuItems;
 	menuItems.pushBack(itemPlay);
+	menuItems.pushBack(itemSetting);
 	menuItems.pushBack(itemExit);
-
 	auto menu = Menu::createWithArray(menuItems);
-	menu->setPosition(200, 100);
+	menu->setPosition(Vec2(240, 100));
 	addChild(menu);
-
-	auto button = ui::Button::create("normal.jfif", "Yasuo.png", "CloseNormal.png");
-	button->setPosition(Vec2(100, 100));
-	//button->setTitleText("Button Text");
-
-	button->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			break;
-		default:
-			break;
-		}
-	});
-	//addChild(button);
-
-	// Create checkbox
-	auto checkbox = ui::CheckBox::create("check_box_normal.png",
-		"check_box_normal_press.png",
-		"check_box_active.png",
-		"check_box_normal_disable.png",
-		"check_box_active_disable.png");
-	checkbox->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
-	{
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			log("checkbox 1 clicked");
-			break;
-		default:
-			break;
-		}
-	});
-	//this->addChild(checkbox);
-
-
     return true;
 }
 
 
-void HelloWorld::menuCloseCallback(Ref* pSender)
+void MainMenuScene::menuCloseCallback(Ref* pSender)
 {
     //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
@@ -201,6 +160,18 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     //_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
+}
+
+void MainMenuScene::menuPlayCallback(cocos2d::Ref * pSender)
+{
+	auto gameplay = GamePlay::createScene();
+	Director::getInstance()->replaceScene(gameplay);
+}
+
+void MainMenuScene::menuSettingCallback(cocos2d::Ref * pSender)
+{
+	auto setting = Setting::createScene();
+	Director::getInstance()->replaceScene(setting);
 }
 
 
