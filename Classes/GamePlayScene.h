@@ -38,9 +38,17 @@ public:
     
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
+	
+	// on Touch 
 	bool onTouchBegan(Touch *touch, Event *urused_event);
 	void onTouchMoved(Touch *touch, Event *urused_event);
 	void onTouchEnded(Touch *touch, Event *urused_event);
+
+	// on Keyboard
+	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
+	void onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event);
+
+
     // implement the "static create()" method manually
     CREATE_FUNC(GamePlay);
 };

@@ -116,7 +116,7 @@ bool GamePlay::init()
 	player->setPosition(260, 50);
 	addChild(player);
 
-	//Tạo các hiệu cho bee từ 3 sprite, dùng đối tượng SpriteFrame
+	//Tạo các hiệu cho may bay từ 3 sprite, dùng đối tượng SpriteFrame
 	Vector<SpriteFrame*> animFrames;
 	animFrames.pushBack(SpriteFrame::create("./Sprites/SpaceShip/1.png", Rect(0, 0, 150, 150)));
 	animFrames.pushBack(SpriteFrame::create("./Sprites/SpaceShip/2.png", Rect(0, 0, 150, 150)));
@@ -128,12 +128,20 @@ bool GamePlay::init()
 	//Gắn hình ảnh động cho may bay và chạy nó lặp vô hạn
 	player->runAction(RepeatForever::create(animate));
 	
-	//
+	// on touch 
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(GamePlay::onTouchBegan,this);
 	touchListener->onTouchMoved = CC_CALLBACK_2(GamePlay::onTouchMoved, this);
 	touchListener->onTouchEnded = CC_CALLBACK_2(GamePlay::onTouchEnded, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, this);
+
+	//on Keyboard
+
+	auto listener = EventListenerKeyboard::create();
+	listener->onKeyPressed = CC_CALLBACK_2(GamePlay::onKeyPressed, this);
+	listener->onKeyReleased = CC_CALLBACK_2(GamePlay::onKeyReleased, this);
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, player);
 
     return true;
 
@@ -175,6 +183,36 @@ void GamePlay::onTouchMoved(Touch * touch, Event * urused_event)
 void GamePlay::onTouchEnded(Touch * touch, Event * urused_event)
 {
 	player->setPosition(260, 50);
+}
+
+void GamePlay::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event)
+{
+	Vec2 loc = event->getCurrentTarget()->getPosition();
+	switch (keyCode) 
+	{
+		case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+		case EventKeyboard::KeyCode::KEY_A:
+			event->getCurrentTarget()->setPosition(loc.x-10, loc.y);
+			break;
+		case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+		case EventKeyboard::KeyCode::KEY_D:
+			event->getCurrentTarget()->setPosition(loc.x+10, loc.y);
+			break;
+		case EventKeyboard::KeyCode::KEY_UP_ARROW:
+		case EventKeyboard::KeyCode::KEY_W:
+			event->getCurrentTarget()->setPosition(loc.x, loc.y+10);
+			break;
+		case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+		case EventKeyboard::KeyCode::KEY_S:
+			event->getCurrentTarget()->setPosition(loc.x, loc.y-10);
+			break;
+
+
+	}
+}
+
+void GamePlay::onKeyReleased(EventKeyboard::KeyCode keyCode, Event * event)
+{
 }
 
 
