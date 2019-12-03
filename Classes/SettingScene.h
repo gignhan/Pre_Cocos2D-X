@@ -27,7 +27,7 @@
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
-
+using namespace cocos2d;
 class Setting : public cocos2d::Scene
 {
 public:

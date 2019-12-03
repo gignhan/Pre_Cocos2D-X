@@ -22,14 +22,14 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "SettingScene.h"
+#include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
-//#include "MainMenuScene.h"
+
 USING_NS_CC;
 
-Scene* Setting::createScene()
+Scene* HelloWorld::createScene()
 {
-    return Setting::create();
+    return HelloWorld::create();
 }
 
 // Print useful error message instead of segfaulting when files are not there.
@@ -40,7 +40,7 @@ static void problemLoading(const char* filename)
 }
 
 // on "init" you need to initialize your instance
-bool Setting::init()
+bool HelloWorld::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -115,92 +115,57 @@ bool Setting::init()
         // add the sprite as a child to this layer
         this->addChild(sprite, 0);
     }*/	
-	auto sprite = Sprite::create("./Sprites/background.png");
-	sprite->setAnchorPoint(Vec2(0, 0));
-	sprite->setPosition(Vec2(0, 0));
-	addChild(sprite);
+	//Menu Item Image
+	auto closeItem = MenuItemImage::create(
+										"CloseNormal.png",
+										"CloseSelected.png",
+										CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
 
-	auto logo = Sprite::create("./Sprites/Logo/logo__.png");
-	logo->setAnchorPoint(Vec2(0, 0));
-	logo->setPosition(Vec2(50, 550));
-	addChild(logo);
+	// create label
+	auto label = Label::create("MENU", "Arial", 30);
+	auto endItem = MenuItemLabel::create(label, nullptr);
+	endItem->setPosition(200, 400);
+	
+	auto itemPlay = MenuItemFont::create("Play", nullptr);
+	auto itemExit = MenuItemFont::create("Exit", CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+	itemPlay->setPosition(100, 100);
+	itemExit->setPosition(100, 50);
 
-	auto itemSound = MenuItemFont::create("Sound", CC_CALLBACK_1(Setting::onClickItemSound, this));
-	auto itemAbout = MenuItemFont::create("About", CC_CALLBACK_1(Setting::onClickItemAbout, this));
-	auto itemBack = MenuItemImage::create("./Buttons/resume_normal.png", "./Buttons/resume_pressed.png" ,CC_CALLBACK_1(Setting::menuCloseCallback, this));
-	itemSound->setPosition(Vec2(10, 200));
-	itemAbout->setPosition(Vec2(10, 100));
-	//itemBack->setAnchorPoint(Vec2(1,1));
-	itemBack->setPosition(Vec2(10 , 150));
+	auto myMenu = Menu::create(closeItem, endItem, nullptr);
+	myMenu->setPosition(100, 100);
+	//addChild(myMenu);
 	// Create Menu from array of menuItem
 	Vector<MenuItem*> menuItems;
-	menuItems.pushBack(itemSound);
-	menuItems.pushBack(itemAbout);
-	menuItems.pushBack(itemBack);
+	menuItems.pushBack(itemPlay);
+	menuItems.pushBack(itemExit);
+
 	auto menu = Menu::createWithArray(menuItems);
-	menu->setPosition(Vec2(0, 0));
+	menu->setPosition(200, 100);
 	addChild(menu);
-	
-	static auto textField = ui::TextField::create("Hello Cocos2d-x", "Arial", 24);
-	textField->setMaxLengthEnabled(true);
-	textField->setMaxLength(10);
-	//textField->setPasswordEnabled(true);
-	textField->setPosition(Vec2(220, 500));
-	textField->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
-	{
-		log("editing a TextField");
+
+	auto button = ui::Button::create("normal.jfif", "Yasuo.png", "CloseNormal.png");
+	button->setPosition(Vec2(100, 100));
+	//button->setTitleText("Button Text");
+
+	button->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			break;
+		default:
+			break;
+		}
 	});
-	addChild(textField);
+	//addChild(button);
 
-	
-
-
-    return true;
-}
-
-
-void Setting::menuCloseCallback(Ref* pSender)
-{
-    //Close the cocos2d-x game scene and quit the application
-    Director::getInstance()->end();
-	//auto main = MainMenuScene::create();
-	//Director::getInstance()->replaceScene(main);
-
-    #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    exit(0);
-#endif
-
-    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() and exit(0) as given above,instead trigger a custom event created in RootViewController.mm as below*/
-
-    //EventCustom customEndEvent("game_scene_close_event");
-    //_eventDispatcher->dispatchEvent(&customEndEvent);
-
-
-}
-
-void Setting::onClickItemSound(cocos2d::Ref * pSender)
-{
-	
-	static auto slider = ui::Slider::create();
-	slider->loadBarTexture("./Sprites/slider_bar_bg.png");
-	slider->loadSlidBallTextures("./Sprites/slider_ball_normal.png", "./Sprites/slider_ball_pressed.png", "./Sprites/slider_ball_disable.png");
-	slider->loadProgressBarTexture("./Sprites/slider_bar_pressed.png");
-	slider->setPercent(10);
-	slider->setPosition(Vec2(200, 250));
-	slider->addClickEventListener([](Ref* event) 
-	{
-		log("Slider: %d", slider->getPercent());
-	});
-	addChild(slider);
-
-	auto visibleSize1 = Director::getInstance()->getVisibleSize();
-	auto checkbox = ui::CheckBox::create("./Sprites/checkbox_normal.png",
-		"./Sprites/checkbox_pressed.png",
-		"./Sprites/checkbox_checked.png",
-		"./Sprites/checkbox_normal_disable.png",
-		"./Sprites/checkbox_checked_disable.png");
-
-	checkbox->setPosition(Vec2(350, 250));
+	// Create checkbox
+	auto checkbox = ui::CheckBox::create("check_box_normal.png",
+		"check_box_normal_press.png",
+		"check_box_active.png",
+		"check_box_normal_disable.png",
+		"check_box_active_disable.png");
 	checkbox->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
 	{
 		switch (type)
@@ -214,26 +179,28 @@ void Setting::onClickItemSound(cocos2d::Ref * pSender)
 			break;
 		}
 	});
+	//this->addChild(checkbox);
 
-	this->addChild(checkbox);
-	
-	
+
+    return true;
 }
 
-void Setting::onClickItemAbout(cocos2d::Ref * pSender)
+
+void HelloWorld::menuCloseCallback(Ref* pSender)
 {
-	auto scrollView = ui::ScrollView::create();
-	scrollView->setDirection(ui::ScrollView::Direction::VERTICAL);
-	scrollView->setContentSize(Size(300, 200));
-	scrollView->setInnerContainerSize(Size(1280, 2500));
-	scrollView->setBounceEnabled(true);
-	scrollView->setPosition(Vec2(200, 50));
-	auto label = Label::createWithSystemFont("Game Fight Fly ", "Arial", 20);
-	label->setPosition(Vec2(scrollView->getContentSize().width / 2,50));
-	scrollView->addChild(label);
-	addChild(scrollView);
+    //Close the cocos2d-x game scene and quit the application
+    Director::getInstance()->end();
 
+    #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
 
+    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() and exit(0) as given above,instead trigger a custom event created in RootViewController.mm as below*/
+
+    //EventCustom customEndEvent("game_scene_close_event");
+    //_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
 }
+
+

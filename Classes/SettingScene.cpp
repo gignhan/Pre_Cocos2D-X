@@ -24,7 +24,7 @@
 
 #include "SettingScene.h"
 #include "SimpleAudioEngine.h"
-
+//#include "MainMenuScene.h"
 USING_NS_CC;
 
 Scene* Setting::createScene()
@@ -115,24 +115,37 @@ bool Setting::init()
         // add the sprite as a child to this layer
         this->addChild(sprite, 0);
     }*/	
-	
+	auto sprite = Sprite::create("./Sprites/background.png");
+	sprite->setAnchorPoint(Vec2(0, 0));
+	sprite->setPosition(Vec2(0, 0));
+	addChild(sprite);
+
+	auto logo = Sprite::create("./Sprites/Logo/logo__.png");
+	logo->setAnchorPoint(Vec2(0, 0));
+	logo->setPosition(Vec2(50, 550));
+	addChild(logo);
+
 	auto itemSound = MenuItemFont::create("Sound", CC_CALLBACK_1(Setting::onClickItemSound, this));
 	auto itemAbout = MenuItemFont::create("About", CC_CALLBACK_1(Setting::onClickItemAbout, this));
+	auto itemBack = MenuItemImage::create("./Buttons/resume_normal.png", "./Buttons/resume_pressed.png" ,CC_CALLBACK_1(Setting::menuCloseCallback, this));
 	itemSound->setPosition(Vec2(10, 200));
 	itemAbout->setPosition(Vec2(10, 100));
+	//itemBack->setAnchorPoint(Vec2(1,1));
+	itemBack->setPosition(Vec2(10 , 150));
 	// Create Menu from array of menuItem
 	Vector<MenuItem*> menuItems;
 	menuItems.pushBack(itemSound);
 	menuItems.pushBack(itemAbout);
+	menuItems.pushBack(itemBack);
 	auto menu = Menu::createWithArray(menuItems);
-	menu->setPosition(Vec2(100, 100));
+	menu->setPosition(Vec2(0, 0));
 	addChild(menu);
 	
 	static auto textField = ui::TextField::create("Hello Cocos2d-x", "Arial", 24);
 	textField->setMaxLengthEnabled(true);
 	textField->setMaxLength(10);
-	textField->setPasswordEnabled(true);
-	textField->setPosition(Vec2(150, 100));
+	//textField->setPasswordEnabled(true);
+	textField->setPosition(Vec2(220, 500));
 	textField->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
 	{
 		log("editing a TextField");
@@ -150,6 +163,8 @@ void Setting::menuCloseCallback(Ref* pSender)
 {
     //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
+	//auto main = MainMenuScene::create();
+	//Director::getInstance()->replaceScene(main);
 
     #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
@@ -213,12 +228,9 @@ void Setting::onClickItemAbout(cocos2d::Ref * pSender)
 	scrollView->setInnerContainerSize(Size(1280, 2500));
 	scrollView->setBounceEnabled(true);
 	scrollView->setPosition(Vec2(200, 50));
-	for (int i = 0; i < 50; i++)
-	{
-		auto label = Label::createWithSystemFont("line " + i, "Arial", 20);
-		label->setPosition(Vec2(scrollView->getContentSize().width / 2, i * 50));
-		scrollView->addChild(label);
-	}
+	auto label = Label::createWithSystemFont("Game Fight Fly ", "Arial", 20);
+	label->setPosition(Vec2(scrollView->getContentSize().width / 2,50));
+	scrollView->addChild(label);
 	addChild(scrollView);
 
 
