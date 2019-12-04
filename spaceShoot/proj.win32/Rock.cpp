@@ -9,8 +9,8 @@ Rock::Rock()
 
 Rock::Rock(Scene * scene)
 {
-	m_sprite = Sprite::create("./Sprites/Rock/aestroid_dark.png");
-	scene->addChild(m_sprite);
+	//m_sprite = Sprite::create("./Sprites/Rock/aestroid_dark.png");
+	//scene->addChild(m_sprite);
 }
 
 Rock::~Rock()

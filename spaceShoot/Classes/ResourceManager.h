@@ -29,16 +29,16 @@ THE SOFTWARE.
 
 //#include "SimpleAudioEngine.h"
 using namespace std;
-using namespace ui;
+//using namespace ui;
 USING_NS_CC;
 class ResourceManager
 {
 private: 
-	static ResourceManager* s_instance;
-	static string m_dataFolderPath;
-	static map<char, Sprite*> m_sprites;
-	static map<char, Button*> m_Buttons;
-	static map<char, Label*> m_Labels;
+	 ResourceManager* s_instance;
+	 string m_dataFolderPath;
+	 map<char, Sprite*> m_sprites;
+	 map<char, ui::Button*> m_Buttons;
+	 map<char, Label*> m_Labels;
 public:
 	ResourceManager();
 	~ResourceManager();
@@ -46,6 +46,6 @@ public:
 	void Init(const string path );
 	void Load(string fileName);
 	Sprite* getSpriteById(char id);
-	Button* getButtonById(char id);
+	ui::Button* getButtonById(char id);
 	Label* getLabelById(char id);
 };

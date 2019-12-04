@@ -22,46 +22,23 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "HelloWorldScene.h"
-#include "SimpleAudioEngine.h"
-#include "ResourceManager.h"
+#ifndef __MAINMENU_SCENE_H__
+#define __MAINMENU_SCENE_H__
 
-ResourceManager::ResourceManager()
+#include "cocos2d.h"
+
+class MainMenuScene : public cocos2d::Scene
 {
+public:
+    static cocos2d::Scene* createScene();
 
-}
+    virtual bool init();
+    
+    // a selector callback
+    void menuCloseCallback(cocos2d::Ref* pSender);
+	void menuSettingCallback(cocos2d::Ref* pSender);
+    // implement the "static create()" method manually
+    CREATE_FUNC(MainMenuScene);
+};
 
-ResourceManager::~ResourceManager()
-{
-}
-
-ResourceManager * ResourceManager::getInstance()
-{
-	if (!s_instance) s_instance = new ResourceManager();
-	return s_instance;
-}
-
-void ResourceManager::Init(const string path)
-{
-}
-
-void ResourceManager::Load(string fileName)
-{
-	auto file =FileUtils::getInstance()->getStringFromFile(fileName);
-
-}
-
-Sprite * ResourceManager::getSpriteById(char id)
-{
-	return nullptr;
-}
-
-//Button * ResourceManager::getButtonById(char id)
-//{
-//	return NULL;
-//}
-
-Label * ResourceManager::getLabelById(char id)
-{
-	return nullptr;
-}
+#endif // __MAINMENU_SCENE_H__

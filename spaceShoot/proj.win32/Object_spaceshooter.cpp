@@ -4,11 +4,13 @@
 
 Object_spaceshooter::Object_spaceshooter()
 {
+	m_sprite = new Sprite();
 }
 
 
 Object_spaceshooter::~Object_spaceshooter()
 {
+	delete m_sprite;
 }
 
 Sprite * Object_spaceshooter::getM_sprite()
