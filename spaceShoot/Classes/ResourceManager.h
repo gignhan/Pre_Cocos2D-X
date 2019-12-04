@@ -26,6 +26,7 @@ THE SOFTWARE.
 #include "cocos2d.h"
 #include "ui\CocosGUI.h"
 #include<string>
+
 //#include "SimpleAudioEngine.h"
 using namespace std;
 using namespace ui;
