@@ -34,18 +34,19 @@ USING_NS_CC;
 class ResourceManager
 {
 private: 
-	 ResourceManager* s_instance;
-	 string m_dataFolderPath;
-	 map<char, Sprite*> m_sprites;
-	 map<char, ui::Button*> m_Buttons;
-	 map<char, Label*> m_Labels;
+	 static ResourceManager* s_instance;
+	 static string m_dataFolderPath;
+	 static Map<char, Sprite*> m_Sprites;
+	 static Map<char, ui::Button*> m_Buttons;
+	 static Map<char, Label*> m_Labels;
 public:
-	ResourceManager();
+	//ResourceManager();
 	~ResourceManager();
-	ResourceManager* getInstance();
-	void Init(const string path );
-	void Load(string fileName);
-	Sprite* getSpriteById(char id);
-	ui::Button* getButtonById(char id);
-	Label* getLabelById(char id);
+	static ResourceManager* getInstance();
+	static void Init(const string path );
+	static void Load(string fileName);
+	static Sprite* getSpriteById(char id);
+	static ui::Button* getButtonById(char id);
+	static Label* getLabelById(char id);
+	static Sprite* GetBackgroundSprite();
 };

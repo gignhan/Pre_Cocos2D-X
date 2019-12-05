@@ -26,10 +26,10 @@
 #include "SimpleAudioEngine.h"
 #include "ResourceManager.h"
 
-ResourceManager::ResourceManager()
-{
-
-}
+//ResourceManager::ResourceManager()
+//{
+//
+//}
 
 ResourceManager::~ResourceManager()
 {
@@ -43,25 +43,103 @@ ResourceManager * ResourceManager::getInstance()
 
 void ResourceManager::Init(const string path)
 {
+	Load("Data.bin");
 }
 
 void ResourceManager::Load(string fileName)
 {
-	auto file =FileUtils::getInstance()->getStringFromFile(fileName);
+	auto isExit = FileUtils::getInstance()->isFileExist(fileName);
+	string content = "";
+	if (isExit) {
+		auto file = FileUtils::getInstance()->getStringFromFile(fileName);
+	}
+	stringstream ss(content);
+	string line;
+	string text, numberLine, idPath;
+	getline(ss, line, '\n');
+	istringstream is(line);
+	is >> text >> numberLine;
+	int size = stoi(numberLine);
+	if (text == "#SPRITE")
+	{
+		for (int i = 0; i < size; i++)
+		{
+			getline(ss, line, '\n');
+			string num, idPath;
+			istringstream idLine(line);
+			idLine >> text >> num;
+
+			getline(ss, line, '\n');
+			istringstream pathLine(line);
+			pathLine >> text >> idPath;
+
+			int id = stoi(num);
+			auto sprite = Sprite::create(idPath);
+			this->m_Sprites.insert(id, sprite);
+
+		}
+	}
+	if (text == "#BUTTON")
+	{
+		for (int i = 0; i < size; i++)
+		{
+			getline(ss, line, '\n');
+			string num, idPath,idPath1;
+			istringstream idLine(line);
+			idLine >> text >> num;
+
+			getline(ss, line, '\n');
+			istringstream pathLine(line);
+			pathLine >> text >> idPath;
+
+			getline(ss, line, '\n');
+			istringstream pathLine1(line);
+			pathLine1 >> text >> idPath1;
+
+			int id = stoi(num);
+			auto button = ui::Button::create(idPath,idPath1);
+			this->m_Buttons.insert(id, button);
+		}
+	}
+	if (text == "#FONT")
+	{
+		for (int i = 0; i < size; i++)
+		{
+			getline(ss, line, '\n');
+			string num, idPath;
+			istringstream idLine(line);
+			idLine >> text >> num;
+
+			getline(ss, line, '\n');
+			istringstream pathLine(line);
+			pathLine >> text >> idPath;
+
+			int id = stoi(num);
+			auto label = Label::create("Hello",idPath,24);
+			this->m_Labels.insert(id, label);
+
+		}
+	}
 
 }
 
 Sprite * ResourceManager::getSpriteById(char id)
 {
-	return nullptr;
+	return m_Sprites.at(id);
 }
 
-//Button * ResourceManager::getButtonById(char id)
-//{
-//	return NULL;
-//}
+ui::Button * ResourceManager::getButtonById(char id)
+{
+	return m_Buttons.at(id);
+}
 
 Label * ResourceManager::getLabelById(char id)
 {
-	return nullptr;
+	return m_Labels.at(id);
+}
+Sprite* ResourceManager::GetBackgroundSprite()
+{
+	Sprite* bg = Sprite::create("./Sprites/background.png");
+	bg->retain();
+	return bg;
 }
