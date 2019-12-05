@@ -26,6 +26,9 @@
 #include "SimpleAudioEngine.h"
 #include "ui/CocosGUI.h"
 #include "MainMenuScene.h"
+#include "ResourceManager.h"
+#include "SpaceShooter.h"
+#include "Bullet.h"
 USING_NS_CC;
 
 Scene* LoadingScene::createScene()
@@ -54,39 +57,9 @@ bool LoadingScene::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	scheduleUpdate();
-
-	auto background = Sprite::create("./Sprites/background.png");
-	background->setAnchorPoint(Vec2(0,0));
-	background->setPosition(Vec2(0,0));
-	background->setScale(0.7f);
-	addChild(background);
-    
-	//Tạo hình ảnh nền
-	auto loadingBarGB = Sprite::create("./Sprites/Loading/loadingbar_bg.png");
-	loadingBarGB->setPosition(Vec2(250, 350));
-	addChild(loadingBarGB);
-
-	//Tạo 1 LoadingBar từ hình ảnh loadingbar.png
-	static auto loadingbar = ui::LoadingBar::create("./Sprites/Loading/loadingbar.png");
-	loadingbar->setPosition(loadingBarGB->getPosition());
-
-	//đặt mức độ hoàn thành lúc mới bắt đầu là 0/100
-	loadingbar->setPercent(0);
-	//Thiết lập hướng của tiến trình, ở đây là từ trái sang phải
-	loadingbar->setDirection(ui::LoadingBar::Direction::LEFT);
-
-	addChild(loadingbar);
-	//hàm lambda để cập nhật tiến trình
-	auto updateLoadingBar = CallFunc::create([]() {
-		if (loadingbar->getPercent() < 100)
-		{
-			loadingbar->setPercent(loadingbar->getPercent() + 1);
-		}
-	});
-
-	auto sequenceRunUpdateLoadingBar = Sequence::createWithTwoActions(updateLoadingBar, DelayTime::create(0.1f));
-	auto repeat = Repeat::create(sequenceRunUpdateLoadingBar, 100);
-	loadingbar->runAction(repeat);
+	
+	SpaceShooter* s = new SpaceShooter(this);
+	Bullet* b = new Bullet(this);
 	
     return true;
 }

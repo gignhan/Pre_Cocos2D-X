@@ -21,11 +21,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-
+#ifndef __RESOURCE_MANAGER_H__
+#define __RESOURCE_MANAGER_H__
 
 #include "cocos2d.h"
 #include "ui\CocosGUI.h"
 #include<string>
+#include<iostream>
 
 //#include "SimpleAudioEngine.h"
 using namespace std;
@@ -35,18 +37,19 @@ class ResourceManager
 {
 private: 
 	 static ResourceManager* s_instance;
-	 static string m_dataFolderPath;
-	 static Map<char, Sprite*> m_Sprites;
-	 static Map<char, ui::Button*> m_Buttons;
-	 static Map<char, Label*> m_Labels;
+	  string m_dataFolderPath;
+	  Map<char, Sprite*> m_Sprites;
+	  Map<char, ui::Button*> m_Buttons;
+	  Map<char, Label*> m_Labels;
 public:
-	//ResourceManager();
+	ResourceManager();
 	~ResourceManager();
 	static ResourceManager* getInstance();
-	static void Init(const string path );
-	static void Load(string fileName);
-	static Sprite* getSpriteById(char id);
-	static ui::Button* getButtonById(char id);
-	static Label* getLabelById(char id);
-	static Sprite* GetBackgroundSprite();
+	 void Init(const string path );
+	 void Load(string fileName);
+	 Sprite* getSpriteById(char id);
+	 ui::Button* getButtonById(char id);
+	 Label* getLabelById(char id);
+	 Sprite* getBackGround();
 };
+#endif

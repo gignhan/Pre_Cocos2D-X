@@ -1,8 +1,9 @@
 #pragma once
+
 #include"cocos2d.h"
 USING_NS_CC;
 
-class Object_spaceshooter
+class Object_spaceshooter : cocos2d::Ref
 {
 public: Sprite* m_sprite;
 

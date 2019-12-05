@@ -1,35 +1,10 @@
-/****************************************************************************
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
- 
- http://www.cocos2d-x.org
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
 
-#include "HelloWorldScene.h"
-#include "SimpleAudioEngine.h"
 #include "ResourceManager.h"
+ResourceManager* ResourceManager::s_instance;
+ResourceManager::ResourceManager()
+{
 
-//ResourceManager::ResourceManager()
-//{
-//
-//}
+}
 
 ResourceManager::~ResourceManager()
 {
@@ -48,76 +23,73 @@ void ResourceManager::Init(const string path)
 
 void ResourceManager::Load(string fileName)
 {
-	auto isExit = FileUtils::getInstance()->isFileExist(fileName);
+	auto isExist = FileUtils::getInstance()->isFileExist(fileName);
 	string content = "";
-	if (isExit) {
-		auto file = FileUtils::getInstance()->getStringFromFile(fileName);
+	if (isExist) {
+		content = FileUtils::getInstance()->getStringFromFile(fileName);
 	}
 	stringstream ss(content);
 	string line;
 	string text, numberLine, idPath;
+
 	getline(ss, line, '\n');
 	istringstream is(line);
 	is >> text >> numberLine;
-	int size = stoi(numberLine);
-	if (text == "#SPRITE")
-	{
-		for (int i = 0; i < size; i++)
-		{
+	int size = std::stoi(numberLine);
+	if (text == "#SPRITE") {
+		for (int i = 0; i < size; i++) {
+			// get the ID line
 			getline(ss, line, '\n');
-			string num, idPath;
-			istringstream idLine(line);
-			idLine >> text >> num;
-
-			getline(ss, line, '\n');
-			istringstream pathLine(line);
+			std::string number, idPath;
+			std::istringstream idLine(line);
+			idLine >> text >> number;
+			// get PATH line
+			std::getline(ss, line, '\n');
+			std::istringstream pathLine(line);
 			pathLine >> text >> idPath;
-
-			int id = stoi(num);
+			// convert stringId to int
+			int id = stoi(number);
 			auto sprite = Sprite::create(idPath);
 			this->m_Sprites.insert(id, sprite);
-
 		}
 	}
-	if (text == "#BUTTON")
-	{
-		for (int i = 0; i < size; i++)
-		{
+	if (text == "#BUTTON") {
+		for (int i = 0; i < size; i++) {
+			// get the ID line
 			getline(ss, line, '\n');
-			string num, idPath,idPath1;
-			istringstream idLine(line);
-			idLine >> text >> num;
-
-			getline(ss, line, '\n');
-			istringstream pathLine(line);
-			pathLine >> text >> idPath;
-
-			getline(ss, line, '\n');
-			istringstream pathLine1(line);
+			std::string number, idPath1, idPath2;
+			std::istringstream idLine(line);
+			idLine >> text >> number;
+			// get PATH line
+			std::getline(ss, line, '\n');
+			std::istringstream pathLine1(line);
 			pathLine1 >> text >> idPath1;
-
-			int id = stoi(num);
-			auto button = ui::Button::create(idPath,idPath1);
+			// get PATH2 line
+			std::getline(ss, line, '\n');
+			std::istringstream pathLine2(line);
+			pathLine2 >> text >> idPath2;
+			int id = stoi(number);
+			// convert stringId to int
+			auto button = ui::Button::create(idPath1, idPath2);
 			this->m_Buttons.insert(id, button);
 		}
 	}
-	if (text == "#FONT")
-	{
-		for (int i = 0; i < size; i++)
-		{
-			getline(ss, line, '\n');
-			string num, idPath;
-			istringstream idLine(line);
-			idLine >> text >> num;
 
+	if (text == "#FONT") {
+		for (int i = 0; i < size; i++) {
+			// get the ID line
 			getline(ss, line, '\n');
-			istringstream pathLine(line);
-			pathLine >> text >> idPath;
-
-			int id = stoi(num);
-			auto label = Label::create("Hello",idPath,24);
+			std::string number, idPath1, idPath2;
+			std::istringstream idLine(line);
+			idLine >> text >> number;
+			// get PATH line
+			std::getline(ss, line, '\n');
+			std::istringstream pathLine1(line);
+			pathLine1 >> text >> idPath1;
+			// convert stringId to int
+			int id = stoi(number);
+			auto label = Label::create("Hello", idPath, 24);
 			this->m_Labels.insert(id, label);
-
 		}
 	}
 
@@ -137,9 +109,9 @@ Label * ResourceManager::getLabelById(char id)
 {
 	return m_Labels.at(id);
 }
-Sprite* ResourceManager::GetBackgroundSprite()
+
+Sprite * ResourceManager::getBackGround()
 {
-	Sprite* bg = Sprite::create("./Sprites/background.png");
-	bg->retain();
-	return bg;
+
+	return getSpriteById(0);
 }

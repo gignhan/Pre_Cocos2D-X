@@ -1,9 +1,11 @@
 #pragma once
 #include"Object_spaceshooter.h"
 #include"Rock.h"
+#include"Bullet.h"
 class SpaceShooter :public Object_spaceshooter
 {
-//public: Vector<Object_spaceshooter*> m_bullter;
+protected :  
+		vector<Object_spaceshooter*> m_bullet;
 public:
 	SpaceShooter();
 	SpaceShooter(Scene * scene);
