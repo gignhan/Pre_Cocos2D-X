@@ -71,34 +71,36 @@ bool GamePlayScene::init()
 void GamePlayScene::CreateRock()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 30; i++)
 	{
+		auto randomX = RandomHelper::random_int(0, 480);
 		Object_spaceshooter* rock = new Rock(this);
 		r.push_back(rock);
-		rock->m_sprite->setPosition(Vec2(rock->m_sprite->getPosition().x +30, 750));
+		rock->m_sprite->setPosition(Vec2(randomX,700));
 
 		
 	}
 }
-void GamePlayScene::MoveRock()
+void GamePlayScene::MoveRock(float dt)
 {
 	auto randomX1 = RandomHelper::random_int(0, 480);
-	auto moveBy = MoveTo::create(0.8f, Vec2(randomX1, 0));
-	for (int i = 0; i < 20; i++)
+	auto moveBy = MoveTo::create(1.5f, Vec2(randomX1, 0));
+	auto sequence = Sequence::create(moveBy, nullptr);
+	for (int i = 0; i < 30; i++)
 	{
-		auto randomX = RandomHelper::random_int(0, 480);
-		
-		auto rock =r[i]->m_sprite;
-		r[i]->m_sprite->setPosition(Vec2(randomX, 750));
-		
-
-		r[i]->m_sprite->runAction(moveBy->clone());
-		break;
-		if (r[i]->m_sprite->getPosition().y <= 0)
+		auto bullet = this->r[i]->getM_sprite();
+		if (!bullet->isVisible()) {
+			bullet->setVisible(true);
+			bullet->setPosition(randomX1,700);
+			bullet->runAction(sequence->clone());
+			dt = 0;
+			break;
+		}
+		if (bullet->getPosition().y <0)
 		{
-			r[i]->m_sprite->stopAllActions();
-			//rock->setVisible(false);
-			r[i]->m_sprite->setPosition(Vec2(randomX1,750));
+			bullet->stopAllActions();
+			bullet->setVisible(false);
+			bullet->setPosition(randomX1, 700);
 		}
 	}
 }
@@ -112,7 +114,7 @@ void GamePlayScene::update(float deltaTime)
 	{
 		dt = 0;
 		s->Update(0.1f);	
-		MoveRock();
+		MoveRock(0.1f);
 	}
 	
 	

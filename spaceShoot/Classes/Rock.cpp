@@ -12,7 +12,7 @@ Rock::Rock(Scene * scene)
 	ResourceManager * resource = new ResourceManager();
 	resource->Init("Data.bin");
 	m_sprite = resource->getSpriteById(3);
-	//m_sprite->setVisible(false);
+	m_sprite->setVisible(false);
 	scene->addChild(m_sprite);
 }
 

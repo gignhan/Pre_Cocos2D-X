@@ -38,7 +38,7 @@ public:
 
     virtual bool init();
 	void CreateRock();
-	void MoveRock();
+	void MoveRock(float dt);
 	// a selector callback
 	void update(float deltaTime);
 	// on Touch 
