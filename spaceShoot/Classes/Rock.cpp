@@ -22,16 +22,16 @@ Rock::~Rock()
 
 void Rock::Init()
 {
+
 }
 
 void Rock::Update(float deltaTime)
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto rock = getM_sprite();
-	if (rock->getPosition().y < -100)
+	if (m_sprite->getPosition().y < -100)
 	{
-		rock->setVisible(false);
-		rock->stopAllActions();
-		rock->setPosition(rock->getPosition().x, visibleSize.height + 300);
+		m_sprite->setVisible(false);
+		m_sprite->stopAllActions();
+		m_sprite->setPosition(m_sprite->getPosition().x, visibleSize.height + 300);
 	}
 }

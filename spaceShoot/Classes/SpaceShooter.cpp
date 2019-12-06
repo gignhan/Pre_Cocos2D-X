@@ -10,11 +10,10 @@ SpaceShooter::SpaceShooter(Scene * scene)
 {
 	ResourceManager * resource = new ResourceManager();
 	resource->Init("Data.bin");
-	m_sprite = resource->getSpriteById(4);
-	auto background = resource->getBackGround();
+	m_sprite = resource->getSpriteById(4); // Ship 
+	auto background = Sprite::create("./Sprites/bg_for_game.png");
 	background->setAnchorPoint(Vec2(0,0));
 	background->setPosition(0,0);
-	background->setScale(0.7f);
 	scene->addChild(background);
 	
 	

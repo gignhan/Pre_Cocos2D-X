@@ -22,26 +22,32 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __LOADING_SCENE_H__
-#define __LOADING_SCENE_H__
+#ifndef __GAMEPLAY_SCENE_H__
+#define __GAMEPLAY_SCENE_H__
 
 #include "cocos2d.h"
-#include"ResourceManager.h"
-#include"MainMenuScene.h"
-class LoadingScene : public cocos2d::Scene
+#include "SpaceShooter.h"
+class GamePlayScene : public cocos2d::Scene
 {
+private: 
+	SpaceShooter* m_spaceShip;
+	Object_spaceshooter* s;
+	vector<Object_spaceshooter*> r;
 public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
-    
-    // a selector callback
-    void menuCloseCallback(cocos2d::Ref* pSender);
+	void CreateRock();
+	void MoveRock();
+	// a selector callback
 	void update(float deltaTime);
-	void addLoading();
-	void changeMainMenu(float dt);
+	// on Touch 
+	bool onTouchBegan(Touch *touch, Event *urused_event);
+	void onTouchMoved(Touch *touch, Event *urused_event);
+	void onTouchEnded(Touch *touch, Event *urused_event);
+
     // implement the "static create()" method manually
-    CREATE_FUNC(LoadingScene);
+    CREATE_FUNC(GamePlayScene);
 };
 
-#endif // __HELLOWORLD_SCENE_H__
+#endif // __GAMEPLAY_SCENE_H__

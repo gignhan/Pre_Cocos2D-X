@@ -52,70 +52,6 @@ bool MainMenuScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
-
-    // add a "close" icon to exit the progress. it's an autorelease object
-    /*auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(MainMenuScene::menuCloseCallback, this));
-
-    if (closeItem == nullptr ||
-        closeItem->getContentSize().width <= 0 ||
-        closeItem->getContentSize().height <= 0)
-    {
-        problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
-    }
-    else
-    {
-        float x = origin.x + visibleSize.width - closeItem->getContentSize().width/2;
-        float y = origin.y + closeItem->getContentSize().height/2;
-        closeItem->setPosition(Vec2(x,y));
-    }
-
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
-
-    /////////////////////////////
-    // 3. add your codes below...
-
-    // add a label shows "Hello World"
-    // create and initialize a label
-
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    if (label == nullptr)
-    {
-        problemLoading("'fonts/Marker Felt.ttf'");
-    }
-    else
-    {
-        // position the label on the center of the screen
-        label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                                origin.y + visibleSize.height - label->getContentSize().height));
-
-        // add the label as a child to this layer
-        this->addChild(label, 1);
-    }
-
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-    if (sprite == nullptr)
-    {
-        problemLoading("'HelloWorld.png'");
-    }
-    else
-    {
-        // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-        // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
-    }*/
-
 	auto background = Sprite::create("./Sprites/bg_for_game.png");
 	background->setAnchorPoint(Vec2(0, 0));
 	background->setPosition(Vec2(0, 0));
@@ -126,7 +62,7 @@ bool MainMenuScene::init()
 	logo->setPosition(Vec2(40,400));
 	addChild(logo);
 
-	auto PlayItem = MenuItemImage::create("./Buttons/play_normal.png", "./Buttons/play_pressed.png",CC_CALLBACK_1(MainMenuScene::menuCloseCallback, this));
+	auto PlayItem = MenuItemImage::create("./Buttons/play_normal.png", "./Buttons/play_pressed.png",CC_CALLBACK_1(MainMenuScene::menuGamePlayCallback, this));
 	auto SetItem = MenuItemImage::create("./Buttons/setting_normal.png", "./Buttons/setting_pressed.png", CC_CALLBACK_1(MainMenuScene::menuSettingCallback, this));
 	PlayItem->setScale(0.5f);
 	PlayItem->setPosition(250, 300);
@@ -162,5 +98,11 @@ void MainMenuScene::menuSettingCallback(cocos2d::Ref * pSender)
 {
 	auto setting = SettingScene::createScene();
 	Director::getInstance()->replaceScene(setting);
+}
+
+void MainMenuScene::menuGamePlayCallback(cocos2d::Ref * pSender)
+{
+	auto gameplay = GamePlayScene::createScene();
+	Director::getInstance()->replaceScene(gameplay);
 }
 

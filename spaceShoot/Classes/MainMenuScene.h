@@ -26,7 +26,7 @@
 #define __MAINMENU_SCENE_H__
 
 #include "cocos2d.h"
-
+#include"GamePlayScene.h"
 class MainMenuScene : public cocos2d::Scene
 {
 public:
@@ -37,6 +37,7 @@ public:
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
 	void menuSettingCallback(cocos2d::Ref* pSender);
+	void menuGamePlayCallback(cocos2d::Ref* pSender);
     // implement the "static create()" method manually
     CREATE_FUNC(MainMenuScene);
 };

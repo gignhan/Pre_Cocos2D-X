@@ -1,4 +1,4 @@
-﻿/****************************************************************************
+/****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  
  http://www.cocos2d-x.org
@@ -24,10 +24,7 @@
 
 #include "LoadingScene.h"
 #include "SimpleAudioEngine.h"
-#include "ui/CocosGUI.h"
-#include "MainMenuScene.h"
-#include "ResourceManager.h"
-#include "Bullet.h"
+
 USING_NS_CC;
 
 Scene* LoadingScene::createScene()
@@ -56,57 +53,63 @@ bool LoadingScene::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	scheduleUpdate();
-	s = new SpaceShooter(this);
-	CreateRock();
-
+	ResourceManager * resource = new ResourceManager();
+	resource->Init("Data.bin");
+	Sprite* background = resource->getBackGround();
+	background->setAnchorPoint(Vec2(0, 0));
+	background->setPosition(0, 0);
+	background->setScale(0.7f);
+	this->addChild(background);
+	addLoading();
+	this->schedule(schedule_selector(LoadingScene::changeMainMenu), 3.0f);
     return true;
 }
-void LoadingScene::CreateRock()
+
+
+void LoadingScene::menuCloseCallback(Ref* pSender)
+{
+    //Close the cocos2d-x game scene and quit the application
+    Director::getInstance()->end();
+
+    #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
+
+    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() and exit(0) as given above,instead trigger a custom event created in RootViewController.mm as below*/
+
+    //EventCustom customEndEvent("game_scene_close_event");
+    //_eventDispatcher->dispatchEvent(&customEndEvent);
+
+
+}
+
+void LoadingScene::addLoading()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
-	for (int i = 0; i < 20; i++)
-	{
-		auto rock = new Rock(this);
-		r.push_back(rock);
-		//addChild(rock->getM_sprite());
-		rock->getM_sprite()->setPosition(i * visibleSize.width / 20, visibleSize.height + 300);
-		
-	}
-}
+	auto originSize = Director::getInstance()->getVisibleOrigin();
 
-float dt = 0;
+	auto spriteCache = SpriteFrameCache::getInstance();
+	spriteCache->addSpriteFramesWithFile("./Sprites/Loading/loading1.plist", "./Sprites/Loading/loading1.png");
+	auto loading = Sprite::create();
+	loading->setPosition(Vec2(visibleSize.width / 2 + originSize.x, visibleSize.height / 2 + originSize.y));
+	addChild(loading);
+	Vector<SpriteFrame*> spriteFrames;
+	int maxFrame = 36;
+	const auto maxChar = 35;
+	char frameName[maxChar] = { 0 };
+	for (int i = 0; i <= maxFrame; i++) {
+		sprintf(frameName, "frame_%d.png", i);
+		spriteFrames.pushBack(spriteCache->getSpriteFrameByName(frameName));
+	}
+	auto animation = Animation::createWithSpriteFrames(spriteFrames, 0.15f);
+	auto animate = Animate::create(animation);
+	loading->runAction(RepeatForever::create(animate));
+}
+void LoadingScene::changeMainMenu(float dt)
+{
+	auto myScene = MainMenuScene::createScene();
+	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, myScene));
+}
 void LoadingScene::update(float deltaTime)
 {
-	
-	dt += deltaTime;
-	if (dt >= 0.5f)
-	{
-		dt = 0; 
-		s->Update(0.1f);
-	}
-
-	// make the rock move
-	int randomNumber = rand() % r.size() + 1;
-	auto moveBy = MoveBy::create(8.0f, Vec2(700, -100));
-	if (dt >= 0.5f)
-	{
-		for (int i = randomNumber; i < r.size(); i++)
-		{
-			auto rock = this->r[i]->getM_sprite();
-			if (!rock->isVisible())
-			{
-				rock->runAction(moveBy->clone());
-				rock->setVisible(true);
-				i = r.size() + 10;
-				dt = 0;
-			}
-		}
-	}
-	for (int i = 0; i < r.size(); i++)
-	{
-		this->r[i]->Update(deltaTime);
-	}
 }
-
-
-
