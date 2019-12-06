@@ -27,7 +27,6 @@
 #include "ui/CocosGUI.h"
 #include "MainMenuScene.h"
 #include "ResourceManager.h"
-#include "SpaceShooter.h"
 #include "Bullet.h"
 USING_NS_CC;
 
@@ -57,18 +56,56 @@ bool LoadingScene::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	scheduleUpdate();
-	
-	SpaceShooter* s = new SpaceShooter(this);
-	Bullet* b = new Bullet(this);
-	
+	s = new SpaceShooter(this);
+	CreateRock();
+
     return true;
 }
-
-void LoadingScene::Update(float deltaTime)
+void LoadingScene::CreateRock()
 {
-	auto mainmenu = MainMenuScene::createScene();
-	auto s = Director::getInstance();
-	s->replaceScene(mainmenu);
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	for (int i = 0; i < 20; i++)
+	{
+		auto rock = new Rock(this);
+		r.push_back(rock);
+		//addChild(rock->getM_sprite());
+		rock->getM_sprite()->setPosition(i * visibleSize.width / 20, visibleSize.height + 300);
+		
+	}
+}
+
+float dt = 0;
+void LoadingScene::update(float deltaTime)
+{
+	
+	dt += deltaTime;
+	if (dt >= 0.5f)
+	{
+		dt = 0; 
+		s->Update(0.1f);
+	}
+
+	// make the rock move
+	int randomNumber = rand() % r.size() + 1;
+	auto moveBy = MoveBy::create(8.0f, Vec2(700, -100));
+	if (dt >= 0.5f)
+	{
+		for (int i = randomNumber; i < r.size(); i++)
+		{
+			auto rock = this->r[i]->getM_sprite();
+			if (!rock->isVisible())
+			{
+				rock->runAction(moveBy->clone());
+				rock->setVisible(true);
+				i = r.size() + 10;
+				dt = 0;
+			}
+		}
+	}
+	for (int i = 0; i < r.size(); i++)
+	{
+		this->r[i]->Update(deltaTime);
+	}
 }
 
 

@@ -5,7 +5,10 @@
 class SpaceShooter :public Object_spaceshooter
 {
 protected :  
-		vector<Object_spaceshooter*> m_bullet;
+	float dt = 0;
+	std::vector<Object_spaceshooter*> m_bullet;
+	//vector<Sprite*> m_bullet;
+
 public:
 	SpaceShooter();
 	SpaceShooter(Scene * scene);
@@ -13,7 +16,7 @@ public:
 	void Init();
 	void Update(float deltaTime);
 	void Shoot();
-	//void Collision(Vector<Rock*> v);
+	void Collision(vector<Rock*> v);
 
 
 };

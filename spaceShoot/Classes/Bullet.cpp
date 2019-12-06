@@ -1,13 +1,18 @@
 #include "Bullet.h"
 #include"ResourceManager.h"
 
-
+Bullet::Bullet() 
+{
+	
+}
 Bullet::Bullet(Scene * scene)
 {
 	ResourceManager * resource = new ResourceManager();
 	resource->Init("Data.bin");
 	m_sprite = resource->getSpriteById(2);
-	m_sprite->setPosition(Vec2(100,130));
+	//m_sprite->setPosition(100, 150);
+	
+	m_sprite->setVisible(false);
 	scene->addChild(m_sprite);
 }
 

@@ -26,16 +26,21 @@
 #define __LOADING_SCENE_H__
 
 #include "cocos2d.h"
-
+#include "SpaceShooter.h"
 class LoadingScene : public cocos2d::Scene
 {
+private: 
+	SpaceShooter* m_spaceShip;
+	Object_spaceshooter* s;
+	vector<Rock*> r;
 public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
-    
+	void CreateRock();
     // a selector callback
-	void Update(float deltaTime);
+	void update(float deltaTime);
+	
     // implement the "static create()" method manually
     CREATE_FUNC(LoadingScene);
 };

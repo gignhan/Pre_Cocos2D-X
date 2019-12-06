@@ -4,6 +4,7 @@
 class Bullet :public Object_spaceshooter
 {
 public:
+	Bullet();
 	Bullet(Scene* scene);
 	~Bullet();
 	void Init();
