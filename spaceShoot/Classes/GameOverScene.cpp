@@ -22,14 +22,14 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "LoadingScene.h"
+#include "GameOverScene.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
-Scene* LoadingScene::createScene()
+Scene* GameOverScene::createScene()
 {
-    return LoadingScene::create();
+    return GameOverScene::create();
 }
 
 // Print useful error message instead of segfaulting when files are not there.
@@ -40,7 +40,7 @@ static void problemLoading(const char* filename)
 }
 
 // on "init" you need to initialize your instance
-bool LoadingScene::init()
+bool GameOverScene::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -51,22 +51,14 @@ bool LoadingScene::init()
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
 	scheduleUpdate();
-	ResourceManager * resource = new ResourceManager();
-	resource->Init("Data.bin");
-	Sprite* background = resource->getBackGround();
-	background->setAnchorPoint(Vec2(0, 0));
-	background->setPosition(0, 0);
-	background->setScale(0.7f);
-	this->addChild(background);
-	addLoading();
-	this->schedule(schedule_selector(LoadingScene::changeMainMenu), 3.0f);
+    
+
     return true;
 }
 
 
-void LoadingScene::menuCloseCallback(Ref* pSender)
+void GameOverScene::menuCloseCallback(Ref* pSender)
 {
     //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
@@ -81,35 +73,4 @@ void LoadingScene::menuCloseCallback(Ref* pSender)
     //_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
-}
-
-void LoadingScene::addLoading()
-{
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto originSize = Director::getInstance()->getVisibleOrigin();
-
-	auto spriteCache = SpriteFrameCache::getInstance();
-	spriteCache->addSpriteFramesWithFile("./Sprites/Loading/loading2.plist", "./Sprites/Loading/loading2.png");
-	auto loading = Sprite::create();
-	loading->setPosition(Vec2(visibleSize.width / 2 + originSize.x, visibleSize.height / 2 + originSize.y));
-	addChild(loading);
-	Vector<SpriteFrame*> spriteFrames;
-	int maxFrame = 36;
-	const auto maxChar = 35;
-	char frameName[maxChar] = { 0 };
-	for (int i = 0; i <= maxFrame; i++) {
-		sprintf(frameName, "frame-%d.png", i);
-		spriteFrames.pushBack(spriteCache->getSpriteFrameByName(frameName));
-	}
-	auto animation = Animation::createWithSpriteFrames(spriteFrames, 0.15f);
-	auto animate = Animate::create(animation);
-	loading->runAction(RepeatForever::create(animate));
-}
-void LoadingScene::changeMainMenu(float dt)
-{
-	auto myScene = MainMenuScene::createScene();
-	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, myScene));
-}
-void LoadingScene::update(float deltaTime)
-{
 }

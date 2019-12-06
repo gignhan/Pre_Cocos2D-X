@@ -82,17 +82,23 @@ void GamePlayScene::CreateRock()
 }
 void GamePlayScene::MoveRock()
 {
-	auto moveBy = MoveBy::create(3, Vec2(100, -900));
+	auto randomX1 = RandomHelper::random_int(0, 480);
+	auto moveBy = MoveTo::create(0.8f, Vec2(randomX1, 0));
 	for (int i = 0; i < 20; i++)
 	{
-		auto rock = this->r[i]->m_sprite;
-		rock->setPosition(Vec2(100, 750));
-		rock->runAction(moveBy);
-		if (rock->getPosition().y < 0)
+		auto randomX = RandomHelper::random_int(0, 480);
+		
+		auto rock =r[i]->m_sprite;
+		r[i]->m_sprite->setPosition(Vec2(randomX, 750));
+		
+
+		r[i]->m_sprite->runAction(moveBy->clone());
+		break;
+		if (r[i]->m_sprite->getPosition().y <= 0)
 		{
-			rock->stopAllActions();
-			rock->setVisible(false);
-			rock->setPosition(Vec2(i + 10,700));
+			r[i]->m_sprite->stopAllActions();
+			//rock->setVisible(false);
+			r[i]->m_sprite->setPosition(Vec2(randomX1,750));
 		}
 	}
 }
@@ -105,8 +111,8 @@ void GamePlayScene::update(float deltaTime)
 	if (dt >= 0.5f)
 	{
 		dt = 0;
-		s->Update(0.3f);	
-		
+		s->Update(0.1f);	
+		MoveRock();
 	}
 	
 	
