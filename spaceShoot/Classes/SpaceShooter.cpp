@@ -12,12 +12,12 @@ SpaceShooter::SpaceShooter(Scene * scene)
 	resource->Init("Data.bin");
 	m_sprite = resource->getSpriteById(4); // Ship 
 	auto background = Sprite::create("./Sprites/bg_for_game.png");
-	background->setAnchorPoint(Vec2(0,0));
-	background->setPosition(0,0);
+	background->setAnchorPoint(Vec2(0, 0));
+	background->setPosition(0, 0);
 	scene->addChild(background);
-	
-	
-	
+
+
+
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("./Sprites/SpaceShip/ship.plist", "./Sprites/SpaceShip/ship.png");
 
 	const int numberSprite = 5;
@@ -58,22 +58,22 @@ SpaceShooter::~SpaceShooter()
 
 void SpaceShooter::Init()
 {
-	
+
 }
 
 void SpaceShooter::Update(float deltaTime)
 {
-		Shoot();
+	Shoot();
 }
 
 void SpaceShooter::Shoot()
 {
 	/*auto move = MoveBy::create(1.5f, Vec2(0, 700));
-	
+
 	for (int i = 1; i < 20; i++)
 	{
-		m_bullet[i]->m_sprite->setPosition(this->m_sprite->getPosition().x, this->m_sprite->getPosition().y);
-		m_bullet[i]->m_sprite->runAction(move);
+	m_bullet[i]->m_sprite->setPosition(this->m_sprite->getPosition().x, this->m_sprite->getPosition().y);
+	m_bullet[i]->m_sprite->runAction(move);
 	}*/
 	auto moveBy = MoveBy::create(1.5f, Vec2(0, 700));
 	auto sequence = Sequence::create(moveBy, nullptr);
@@ -84,7 +84,7 @@ void SpaceShooter::Shoot()
 			bullet->setVisible(true);
 			bullet->setPosition(this->getM_sprite()->getPosition().x, this->getM_sprite()->getPosition().y);
 			bullet->runAction(sequence->clone());
-			
+
 			break;
 		}
 		if (bullet->getPosition().y > 700)
@@ -98,7 +98,7 @@ void SpaceShooter::Shoot()
 
 void SpaceShooter::Collision(vector<Rock*> v)
 {
-	
+
 }
 Sprite * DuplicateSprite(Sprite * sprite)
 {

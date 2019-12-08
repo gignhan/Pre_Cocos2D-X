@@ -26,15 +26,18 @@
 #define __GAMEOVER_SCENE_H__
 
 #include "cocos2d.h"
-
+#include"ResourceManager.h"
+#include"GamePlayScene.h"
 class GameOverScene : public cocos2d::Scene
 {
 public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
+	void menuGamePlayCallback(cocos2d::Ref* pSender);
     
-    // a selector callback
+	
+	// a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
     
     // implement the "static create()" method manually
