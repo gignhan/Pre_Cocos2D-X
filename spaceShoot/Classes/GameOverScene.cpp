@@ -52,9 +52,29 @@ bool GameOverScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	scheduleUpdate();
-    
+	ResourceManager * resource = new ResourceManager();
+	resource->Init("Data.bin");
+	Sprite* background = resource->getBackGround();
+	background->setAnchorPoint(Vec2(0, 0));
+	background->setPosition(0, 0);
+	background->setScale(0.7f);
+	this->addChild(background);
+
+	auto PlayItem = MenuItemImage::create("./Buttons/resume_normal.png", "./Buttons/resume_pressed.png", CC_CALLBACK_1(GameOverScene::menuGamePlayCallback, this));
+	PlayItem->setScale(0.5f);
+	PlayItem->setPosition(250, 300);
+
+	auto myMenu = Menu::create(PlayItem, nullptr);
+	myMenu->setPosition(0, 0);
+	addChild(myMenu);
 
     return true;
+}
+
+void GameOverScene::menuGamePlayCallback(cocos2d::Ref * pSender)
+{
+	auto gameplay = GamePlayScene::createScene();
+	Director::getInstance()->replaceScene(gameplay);
 }
 
 
